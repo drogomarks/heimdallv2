@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if success %}
+<div class="alert alert-dismissible alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>{{ success }}</strong>
+</div>
+{% endif %}
+
   <h2 style="text-align: center;">PUT Requests</h2>
     <br>
 
@@ -11,7 +18,7 @@
     <br>
     <br>
 
-    <form  class="form-inline" method="POST" action="/put/uservex" target="_blank">
+    <form  class="form-inline" method="POST" action="/put/uservex">
       {{ form.hidden_tag() }}
       <div class="form-group" style="margin-right: 10px;">
         {{ form.customer_id.label }}:
@@ -36,5 +43,55 @@
       </div>
       <button style="margin-left: 10px;" type="submit" class="btn btn-primary">Make API Call</button>
   </form>
+
+
+  <br>
+  <br>
+
+  {% if data %}
+  <h2> Your Request: </h2>
+  <br>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <th scope="row">HTTP Method:</th>
+        <td>{{ method }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Customer ID:</th>
+        <td>{{ cst_id }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Domain:</th>
+        <td>{{ domain }}</td>
+      </tr>
+      <tr>
+        <th scope="row">User:</th>
+        <td>{{ user }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Mailbox Type:</th>
+        {% if mbx_type == 'rs' %}
+        <td>Rackspace Email</td>
+        {% else %}
+        <td>Exchange</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th scope="row">visibleInExchangeGAL Value:</th>
+        <td>{{ user_vex_val }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p> API Response: </p>
+  <pre>
+  <code>
+    {{ data }}
+  </pre>
+  </code>
+  {% endif %}
+
 
 {% endblock %}

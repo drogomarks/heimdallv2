@@ -4,7 +4,7 @@ import hashlib
 import time
 import requests
 import json
-
+from pprint import pprint
 
 # Get Keys & Set User Agent
 usrkey = 'USER_KEY';
@@ -35,6 +35,7 @@ def user_get(cst_id, domain, mbx_type, user):
     url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes/" + user
     request = requests.get(url, headers=headers)
     data = request.json()
+    data = json.dumps(data, indent=4, sort_keys=True)
     return data
 
 def domain_get(cst_id, domain, mbx_type):
@@ -47,7 +48,50 @@ def domain_get(cst_id, domain, mbx_type):
     url = base_url + cst_id + "/domains/" + domain
     request = requests.get(url, headers=headers)
     data = request.json()
+    data = json.dumps(data, indent=4, sort_keys=True)
     return data
+
+def mbx_get_list(cst_id, domain, mbx_type):
+    # Set Mailbox Type key for dict
+    if mbx_type == 'rs':
+        mbx_key = 'rsMailboxes'
+    else:
+        mbx_key = 'mailboxes'
+
+    # offset value/url string
+    off_val = 0
+    off_str = "&offset=%s" % off_val
+    # size value/url string
+    sz_val= 50
+    sz_str = "?size=%s" % sz_val
+
+    url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes" + sz_str + off_str
+    request = requests.get(url, headers=headers)
+    data = request.json()
+    mbx_total = data['total']
+    # Empty list for mailboxes
+    global mailboxes
+    mailboxes = []
+    # Offset Val variable to start at 0
+    off_val = -50
+    # While the offset value is less than the total mbx
+    while mbx_total > off_val:
+        # Set off value to self + the size value
+        off_val += sz_val
+        off_str = "&offset=%s" % off_val
+        # Construct URL and make call
+        url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes" + sz_str + off_str
+        request = requests.get(url, headers=headers)
+        data = request.json()
+        # Add Users to Mailbox list
+        for key in data[mbx_key]:
+            mbx_usr = key['name']
+            mbx_usr.encode("utf-8")
+            mailboxes.append(mbx_usr)
+
+    mailboxes = json.dumps(mailboxes, indent=4, sort_keys=True)
+
+    return mailboxes
 
 def mbx_get(cst_id, domain, mbx_type):
     # Set Mailbox Type key for dict
@@ -68,8 +112,8 @@ def mbx_get(cst_id, domain, mbx_type):
     data = request.json()
     mbx_total = data['total']
     # Empty list for mailboxes
-    mailboxes = []
     global mailboxes
+    mailboxes = []
     # Offset Val variable to start at 0
     off_val = -50
     # While the offset value is less than the total mbx
@@ -84,9 +128,9 @@ def mbx_get(cst_id, domain, mbx_type):
         # Add Users to Mailbox list
         for key in data[mbx_key]:
             mbx_usr = key['name']
+            mbx_usr.encode("utf-8")
             mailboxes.append(mbx_usr)
     return mailboxes
-
 
 def user_vex(cst_id, domain, mbx_type, user, user_vex_val):
     # Set Mailbox Type key for dict
