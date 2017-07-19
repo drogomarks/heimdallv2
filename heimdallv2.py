@@ -1,6 +1,4 @@
 from flask import Flask, jsonify, render_template, request, session, redirect, url_for
-from quotes import funny_quotes
-import random
 from forms import GetuserForm, GetdomainForm, GetallForm, PutuservexForm, PutdomainvexForm
 from apiTool import user_get, domain_get, mbx_get, user_vex, domain_vex
 import json
@@ -99,17 +97,23 @@ def put_domainvex():
 @app.route("/feedback", methods=['GET', 'POST'])
 def feedback():
     if request.method == 'POST':
+        # From User
         name = request.form['name']
         email = request.form['email']
         body = request.form['body']
         subject = "New Feedback from %s (%s)!" % (name, email)
-        # Send email
-        msg = Message(body,
-                    sender="ubuntu@ip-172-31-14-105.us-west-2.compute.internal",
-                    recipients=[email])
+
+        # From Admin/Server
+        sender = "ubuntu@ip-172-31-14-105.us-west-2.compute.internal"
+        # administrator list
+        admins = ['rudy.marks@gmail.com']
+
+        success = "Thanks! It worked!"
+
+        msg = Message(subject, sender=sender, recipients=admins)
         msg.body = body
         mail.send(msg)
-        success = "Thanks! It worked!"
+
         return render_template("feedback.html", success=success)
 
     if request.method == 'GET':
