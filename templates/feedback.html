@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if success %}
+<div class="alert alert-dismissible alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Success!</strong> Thanks for sending feedback, we'll get back to you about soon as we can.
+</div>
+{% endif %}
+
+  <h2 style="text-align: center;">Submit Feedback</h2>
+  <hr>
+  <br>
+
+  <form class="form-horizontal" action="/feedback" method="post">
+  <fieldset>
+    <div class="form-group">
+      <label for="inputName" class="col-lg-2 control-label">Your Name:</label>
+      <div class="col-lg-10">
+        <input name="name" type="text" class="form-control" id="inputName" placeholder="Hodor">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-2 control-label">Your Email:</label>
+      <div class="col-lg-10">
+        <input type="text" name="email" class="form-control" id="inputEmail" placeholder="hodor@holdthedoor.com">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="textArea" class="col-lg-2 control-label">Feedback/Request:</label>
+      <div class="col-lg-10">
+        <textarea name="body" class="form-control" rows="3" id="textArea"></textarea>
+        <span class="help-block">Please be as detailed as possible. Don't worry about tech jargon, just explain what you want to accmplish.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+{% endblock %}

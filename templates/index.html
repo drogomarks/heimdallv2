@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h2 style="text-align: center;">Welcome to Heimdallv2!</h2>
+  <br>
+
+  <h3> <strong>What is Heimdall?</strong> </h3>
+    <hr>
+    <p> Heimdall is a web tool that interacts with the Rackspace Email and Apps API on your behalf.
+        It allows you to fill out a web form with specific parameters to either get information or make a change to mailbox user, domain etc.
+    </p>
+    <br>
+    <p>You can read more about the API and what you can do with it <a href="http://api-wiki.apps.rackspace.com">here.</a></p>
+
+  <br>
+  <h3> <strong>What's New in v2?</strong> </h3>
+    <hr>
+    <p> There were some issues with the PHP version and it was decided Python would be much better at this, so it was rebuilt in a Python Framework.</p>
+
+    <p> We had issues previously with requests against domains with large amounts of users, this should no longer be an issue. </p>
+
+    <p> There is now a <a href="#">Python Script</a> you can use locally, that takes arguments to perform all these same tasks if you prefer to do it that way.
+        There is a <a href="#">Getting Started</a> page that talks about stuff you need to use it, and a <a href="#">Examples</a> page so you
+        easily copy/paste commands with it and just updated the arguments to suite your needs.
+    </p>
+
+    <p> The goal here was to make these tasks as simple as possible for you, so please <a href="#">provide feedback</a> if it's failing at that in any way, or how it
+        can be better. You can use the <a href="#">Feeback</a> page to send suggestions or things you need it to do.
+    </p>
+    <br>
+
+
+  <h3> <strong>Current Features:</strong> </h3>
+    <hr>
+    <blockquote>
+      <ul>
+        <li> <code>GET</code> Details about a mailbox user from the API. </li>
+        <li> <code>GET</code> Details about a domain from the API. </li>
+        <li> <code>GET</code> a list of users in a domain from the API.</li>
+        <li> <code>PUT</code> call to change the value of visibleInExchangeGAL to <code>true</code> or <code>false</code> for a single user</li>
+        <li> <code>PUT</code> call to change the value of visibleInExchangeGAL to <code>true</code> or <code>false</code> for all users in a domain.</li>
+
+{% endblock %}

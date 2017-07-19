@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h2 style="text-align: center;">PUT Requests</h2>
+    <br>
+
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="/put/uservex">Set visibleInExchangeGAL for User</a></li>
+      <li role="presentation"><a href="/put/domainvex">Set visibleInExchangeGAL for All Users in Domain</a></li>
+    </ul>
+    <br>
+    <br>
+
+    <form  class="form-inline" method="POST" action="/put/uservex" target="_blank">
+      {{ form.hidden_tag() }}
+      <div class="form-group" style="margin-right: 10px;">
+        {{ form.customer_id.label }}:
+        {{ form.customer_id}}
+      </div>
+
+      <div class="form-group" style="margin-right: 10px;">
+        {{ form.domain.label }}:
+        {{ form.domain }}
+      </div>
+      <div class="form-group" style="margin-right: 10px;">
+        {{ form.user.label }}:
+        {{ form.user }}
+      </div>
+      <div class="form-group" style="margin-right: 10px;">
+        {{ form.mbx_type.label }}:
+        {{ form.mbx_type }}
+      </div>
+      <div class="form-group" style="margin-right: 10px;">
+        {{ form.user_vex_val.label }}:
+        {{ form.user_vex_val }}
+      </div>
+      <button style="margin-left: 10px;" type="submit" class="btn btn-primary">Make API Call</button>
+  </form>
+
+{% endblock %}
