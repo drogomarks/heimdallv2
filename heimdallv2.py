@@ -71,7 +71,7 @@ def getall():
         return render_template("getall.html", data=data,
                                 cst_id=cst_id, domain=domain,
                                 mbx_type=mbx_type, method=method,
-                                succes=success, form=form)
+                                form=form, succes=success)
     elif request.method == "GET":
         return render_template("getall.html", form=form)
 
@@ -144,10 +144,18 @@ def feedback():
         return render_template("feedback.html")
 
 # Getting Started view
-
+@app.route("/getstarted")
+def getstarted():
+    return render_template("started.html")
 # Examples view
+@app.route("/examples")
+def examples():
+    return render_template("examples.html")
 
 # Download Script view
+@app.route("/apitool")
+def apitool():
+    return render_template("apitool.html")
 
 
 

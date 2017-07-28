@@ -11,6 +11,7 @@
   </head>
 
   <body>
+
     <nav class="navbar navbar-default">
       <div class="container">
         <div class="navbar-header">
@@ -43,9 +44,9 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">API Tool Script <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Getting Started</a></li>
-                <li><a href="#">Examples</a></li>
-                <li><a href="#">Download Python Script</a></li>
+                <li><a href="/getstarted">Getting Started</a></li>
+                <li><a href="/examples">Examples</a></li>
+                <li><a href="/apitool">Download Python Script</a></li>
               </ul>
             </li>
             <li class="nav-item">
@@ -64,10 +65,23 @@
 
     </div>
 
-
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        function ShowLoading(e) {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = 'http://handysolver.com/images/ajax-loader.gif';
+            div.innerHTML = "Making API Call..(this can take a while)...<br />";
+            div.style.cssText = 'position: fixed; top: 35%; left: 35%; width: 422px; text-align: center;'
+            div.appendChild(img);
+            document.body.appendChild(div);
+            return true;
+            //These 2 lines cancel form submission, so only use if needed.
+            window.event.cancelBubble = true;
+            e.stopPropagation();
+        }
+    </script>
   </body>
 </html>

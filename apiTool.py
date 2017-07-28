@@ -4,12 +4,12 @@ import hashlib
 import time
 import requests
 import json
-from pprint import pprint
+import config
 
 # Get Keys & Set User Agent
-usrkey = 'USER_KEY';
-scrtkey = 'SECRET_KEY';
-usr_agent  = 'USER_AGENT_HERE';
+usrkey = config.usrkey
+scrtkey = config.scrtkey
+usr_agent  = config.usr_agent
 
 # Get Date/Time: YYYYMMDDHHmmss
 tm_stmp = time.strftime("%Y%m%d%H%M%S")
