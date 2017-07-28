@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h2 style="text-align: center;">Getting Started</h2>
+    <hr>
+    <br>
+
+
+    <p> This page is designed to help you get started using the <code>apiTool.py</code>.</p>
+    <p>    So we'll go over the things you need to be able to run this without any issues on your local machine.
+        Again, this is for the <code>apiTool.py</code> Python script, the web tool works as is.
+    </p>
+    <br>
+
+  <h3><strong>Requirements:</strong></h3>
+   <hr>
+   <ul>
+    <li> Your API <code>User Key</code>,<code>Secret Key</code> and <code>User Agent</code> <br></li>
+    <li> Python 2.7</li>
+    <li> The <code>apiTool.py</code> script
+  </ul>
+
+
+  <br>
+  <h3><strong>Set Up</strong></h3>
+    <hr>
+    <br>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <img style="height: 20px; width: 15x;" src="https://image.flaticon.com/icons/svg/23/23700.svg">  	&nbsp; Windows
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <ol>
+              <li><a href="https://www.howtogeek.com/197947/how-to-install-python-on-windows/"> Install Python</a> on your machine. Remember to use 2.7!</li><br>
+              <li><a href="/apiTool"> Download</a> the script. <strong>NOTE the location you download it too.</strong></li><br>
+              <li>Edit the file with whatever editor you wanat and look for lines 67-69. You need to update the <code>usrkey</code>,<code>scrtkey</code> and <code>usr_agent</code> variables with the correct information which you can get from your team lead or boss.</li><br>
+              <li> Press Windows Key + Type in "cmd" + press ENTER. This should pull up command prompt.</li><br>
+              <li> Navigate to the location of the script. For example if it's on your desktop:</li><br>
+                <pre> > C: (press ETNER)</pre>
+                <p class="text-muted"><i>This moves you to the C: drive, this may or may not be where need to go, double check.</i></p>
+                <pre> C:\> cd Users\myusername\Desktop (press ETNER)</pre>
+                <p class="text-muted"><i>You should be in whatever directory you downloaded the script to. You can check with the "dir" command.</i></p>
+                <pre> python apiTool.py -h (press ENTER)</pre>
+                <p class="text-muted"><i>You should get something like this:</i></p>
+                <pre> C:\Users\myusername\Desktop>python apiTool.py -h (press ENTER)
+      usage: apiTool.py [-h] -c CUSTOMER_ID -d DOMAIN [-t [{ex,rs}]] [-u USER]
+                        [--get-user-info] [--get-domain-info] [--get-mailboxes]
+                        [--user-vex {false,true}] [--domain-vex {false,true}]
+
+      optional arguments:
+        -h, --help            show this help message and exit
+        -c CUSTOMER_ID, --customer-id CUSTOMER_ID
+                              Email & Apps Customer ID
+        -d DOMAIN, --domain DOMAIN
+                              Customer domain name you are working with ex:
+                              domain.com.
+        -t [{ex,rs}], --mbx-type [{ex,rs}]
+                              Mailbox Type: rs or ex
+        -u USER, --user USER  User/mailbox you want to work with.
+        --get-user-info       User/mailbox you want to GET info on.
+        --get-domain-info     Domain you want to GET info on.
+        --get-mailboxes       Get list of mailbox users for a domain.
+        --user-vex {false,true}
+                              User/Mailbox you want to change value for.
+        --domain-vex {false,true}
+                              domain you want to change value for.</pre>
+
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <img style="height: 20px; width: 20x;" src="https://s3-us-west-2.amazonaws.com/marksaws-crap/Icons8-Windows-8-Systems-Mac-Os.ico">   	&nbsp; Mac
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <ol>
+              <li>Lucky for you Python comes ready to roll on Mac so no need to install it! :D</li><br>
+              <li><a href="/apiTool"> Download</a> the script. <strong>NOTE the location you download it too.</strong></li><br>
+
+              <li>Edit the file with whatever editor you wanat and look for lines 67-69. You need to update the <code>usrkey</code>,<code>scrtkey</code> and <code>usr_agent</code> variables with the correct information which you can get from your team lead or boss.</li><br>
+              <li> Open Terminal: Finder > Applications > Terminal </li><br>
+              <li> Navigate to the location where downloaded the script:</li><br>
+              <pre>your-macbook:~ username$ cd /path/to/where/script/is (press ENTER)</pre>
+              <pre>your-macbook:~ username$ python apiTool.py -h </pre>
+              <p class="text-muted"><i>You should get something like this:</i></p>
+              <pre> your-macbook:~ username$ python apiTool.py -h (press ENTER)
+          usage: apiTool.py [-h] -c CUSTOMER_ID -d DOMAIN [-t [{ex,rs}]] [-u USER]
+                      [--get-user-info] [--get-domain-info] [--get-mailboxes]
+                      [--user-vex {false,true}] [--domain-vex {false,true}]
+
+          optional arguments:
+          -h, --help            show this help message and exit
+          -c CUSTOMER_ID, --customer-id CUSTOMER_ID
+                            Email & Apps Customer ID
+          -d DOMAIN, --domain DOMAIN
+                            Customer domain name you are working with ex:
+                            domain.com.
+          -t [{ex,rs}], --mbx-type [{ex,rs}]
+                            Mailbox Type: rs or ex
+          -u USER, --user USER  User/mailbox you want to work with.
+          --get-user-info       User/mailbox you want to GET info on.
+          --get-domain-info     Domain you want to GET info on.
+          --get-mailboxes       Get list of mailbox users for a domain.
+          --user-vex {false,true}
+                            User/Mailbox you want to change value for.
+          --domain-vex {false,true}
+                            domain you want to change value for.</pre>
+
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h3><strong>Next Steps</strong></h3>
+    <hr>
+    <p> Continue to see <a href="/examples">examples.</a><p>
+
+
+{% endblock %}

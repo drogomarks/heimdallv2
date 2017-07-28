@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align: center;"> apiTool.py Script </h2>
+  <hr>
+  <br>
+
+  <h3><strong>Download:</strong></h3>
+    <blockquote> <a href="https://s3-us-west-2.amazonaws.com/marksaws-crap/apiTool.py">apiTool.py</a> </blockquote>
+
+  <br>
+
+  <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Show/Hide Script
+  </a>
+  <br>
+  <br>
+  <div class="collapse" id="collapseExample">
+    <div class="well">
+    <pre>
+#!/usr/bin/env python
+import base64
+import hashlib
+import time
+import requests
+import json
+import argparse
+
+# Set Args
+parser = argparse.ArgumentParser('apiTool.py')
+# Customer ID
+parser.add_argument('-c', '--customer-id',
+                   help='Email & Apps Customer ID',
+		           required=True)
+# Domain Name
+parser.add_argument('-d', '--domain',
+                   help='Customer domain name you are working with ex: domain.com.',
+                   required=True)
+# Mailbox Type (rs,ex)
+parser.add_argument('-t', '--mbx-type',
+                   help='Mailbox Type: rs or ex',
+		           type=str, choices=set(('rs','ex')),
+                   nargs='?', const='rs', default='rs')
+# User
+parser.add_argument('-u', '--user',
+                   help='User/mailbox you want to work with.')
+
+# GET User Info Function
+parser.add_argument('--get-user-info',
+                   help='User/mailbox you want to GET info on.',
+                   action='store_true')
+# GET Domain Info Function
+parser.add_argument('--get-domain-info',
+                   help='Domain you want to GET info on.',
+                   action='store_true')
+# GET List of Mailboxes Function
+parser.add_argument('--get-mailboxes',
+                   help='Get list of mailbox users for a domain.',
+                   action='store_true')
+# PUT SetVisableinEx (vex) User Function
+parser.add_argument('--user-vex',
+                   help='User/Mailbox you want to change value for.',
+		           type=str, choices=set(('true','false')),)
+# PUT SetVisableinEx (vex) Domain Function
+parser.add_argument('--domain-vex',
+                   help='domain you want to change value for.',
+		           type=str, choices=set(('true','false')),)
+
+
+args = vars(parser.parse_args())
+
+# Set vars from args
+cst_id = args['customer_id']
+domain = args['domain']
+mbx_type = args['mbx_type']
+user = args['user']
+user_vex_val = args['user_vex']
+domain_vex_val = args['domain_vex']
+
+# Set Mailbox Type key for dict
+if mbx_type == 'rs':
+    mbx_key = 'rsMailboxes'
+else:
+    mbx_key = 'mailboxes'
+
+# Get Keys & Set User Agent
+usrkey = 'USER_KEY';
+scrtkey = 'SECRET_KEY';
+usr_agent  = 'USER_AGENT';
+
+# Get Date/Time: YYYYMMDDHHmmss
+tm_stmp = time.strftime("%Y%m%d%H%M%S")
+# Hash: <User Key><User Agent><Timestamp><Secret Key>
+hash_str = usrkey + usr_agent + tm_stmp + scrtkey
+# Get the hash
+sha1 = base64.b64encode(hashlib.sha1(hash_str).digest())
+# Create API Signature
+api_sig = usrkey + ":" + tm_stmp + ":" + sha1
+
+# Base URL/Headers
+base_url  = "https://api.emailsrvr.com/v1/customers/"
+headers = {"Accept":"application/json", "User-Agent" : "MigFwdTool", "X-Api-Signature" : api_sig}
+
+
+def user_get(user):
+    url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes/" + user
+    request = requests.get(url, headers=headers)
+    data = request.json()
+    data = json.dumps(data, indent=4, sort_keys=True)
+    print data
+
+def domain_get(domain):
+    url = base_url + cst_id + "/domains/" + domain
+    request = requests.get(url, headers=headers)
+    data = request.json()
+    data = json.dumps(data, indent=4, sort_keys=True)
+    print data
+
+def mbx_get(domain):
+    # offset value/url string
+    off_val = 0
+    off_str = "&offset=%s" % off_val
+    # size value/url string
+    sz_val= 50
+    sz_str = "?size=%s" % sz_val
+
+    url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes" + sz_str + off_str
+    request = requests.get(url, headers=headers)
+    data = request.json()
+    mbx_total = data['total']
+    # Empty list for mailboxes
+    global mailboxes
+    mailboxes = []
+    # Offset Val variable to start at 0
+    off_val = -50
+    # While the offset value is less than the total mbx
+    while mbx_total > off_val:
+        # Set off value to self + the size value
+        off_val += sz_val
+        off_str = "&offset=%s" % off_val
+        # Construct URL and make call
+        url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes" + sz_str + off_str
+        request = requests.get(url, headers=headers)
+        data = request.json()
+        # Add Users to Mailbox list
+        for key in data[mbx_key]:
+            mbx_usr = key['name']
+            mailboxes.append(mbx_usr)
+    return mailboxes
+
+
+def user_vex(user, user_vex_val):
+    payload = {'visibleInExchangeGAL' : user_vex_val }
+    url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes/" + user
+    request = requests.put(url, headers=headers, data=payload)
+    print "%s has been updated to %s" % (user, user_vex_val)
+
+def domain_vex(domain, domain_vex_val):
+    payload = {'visibleInExchangeGAL' : domain_vex_val }
+    mbx_get(domain)
+    for user in mailboxes:
+        url = base_url + cst_id + "/domains/" + domain + "/" + mbx_type +  "/mailboxes/" + user
+        request = requests.put(url, headers=headers, data=payload)
+        print "%s has been updated to %s" % (user, domain_vex_val)
+    print "\nDONE!\n"
+
+
+if args['get_domain_info'] == True:
+    domain_get(domain)
+
+if args['get_user_info'] == True:
+    user_get(user)
+
+if args['get_mailboxes'] == True:
+    mbx_get(domain)
+    print "\nMailbox Users for %s:\n" % domain
+    for user in mailboxes:
+        print user
+
+if args['domain_vex'] is not None:
+    domain_vex(domain, domain_vex_val)
+
+if args['user_vex'] is not None:
+    user_vex(user, user_vex_val)
+
+    </div>
+  </div>
+
+
+
+
+{% endblock %}
